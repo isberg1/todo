@@ -1,0 +1,36 @@
+{
+  "name": "basic-pwa",
+  "version": "1.0.0",
+  "description": "The classic Hello World program as a Progressive Web App",
+  "main": "src/code/main.js",
+  "scripts": {
+    "build": "node ./utils/build.js",
+    "build_watch": "node ./utils/build.js --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.0",
+    "@types/chrome": "^0.0.213",
+    "@types/react-dom": "^17.0.11",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^10.0.0",
+    "css-loader": "^6.5.1",
+    "csv-loader": "^3.0.3",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^5.7.2",
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^5.2.0",
+    "xml-loader": "^1.2.1"
+  },
+  "dependencies": {
+    "@types/react": "^17.0.36",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
