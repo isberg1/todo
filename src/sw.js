@@ -1,9 +1,9 @@
 var cacheName = 'hello-pwa';
 var filesToCache = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/main.js'
+  '/todo/',
+  '/todo/index.html',
+  '/todo/css/style.css',
+  '/todo/main.js'
 ];
 console.log("SW running")
 
