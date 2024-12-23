@@ -10,6 +10,13 @@ window.onload = () => {
     navigator.serviceWorker
       .register('./sw.js');
   }
+
+  const link = document.createElement("link")
+  link.rel = "manifest"
+  link.type = "text/json"
+  link.href = "/todo/manifest.json"
+  document.head.appendChild(link)
+  //   { rel: "manifest", type: "text/json", href: "/todo/manifest.json" }
 }
 
 
