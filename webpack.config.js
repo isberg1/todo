@@ -11,7 +11,7 @@ module.exports = {
   // devtool: "inline-source-map",
   devServer: {
     static: {
-      directory: path.join(__dirname, './dist')
+      directory: path.join(__dirname, './docs')
     },
     compress: true,
     historyApiFallback: true,
@@ -57,7 +57,7 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "docs"),
     clean: true,
   },
 
