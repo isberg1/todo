@@ -22,8 +22,10 @@ self.addEventListener('install', (e) => {
 /* Serve cached content when offline */
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
+
+    caches.match(e.request).then(() => {
+      // todo add caches logic here
+      return fetch(e.request);
     })
   );
 });
