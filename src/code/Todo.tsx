@@ -11,11 +11,11 @@ export function Todo() {
   const [list, setList] = usePersistState<Item[]>([], 'itemList');
 
   return (
-    <div className=' flex flex-col justify-center items-center outline outline-red-500 outline-2'>
+    <div className=' flex flex-col justify-center items-center '>
       <div className='w-full sm:max-w-96 p-4 '>
         <div className='flex flex-col justify-between'>
           <input
-            className='shadow-2xl rounded-sm p-2 text-black'
+            className='shadow-2xl rounded-sm p-2 text-black min-h-11'
             type='text'
             onChange={(e) => setInput(e.target.value)}
             value={input}
@@ -26,7 +26,7 @@ export function Todo() {
                 setList((old) => [{ name: input, quantaty: 1 }, ...old]);
               }
             }}
-            className='border-2 border-blue-400 rounded-sm'
+            className='border-2 border-blue-400 rounded-sm min-h-11'
           >Add
           </button>
         </div>
