@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-//import styles from "../css/style.css";
+import "../css/style.css";
 
 
 window.onload = () => {
@@ -32,7 +32,7 @@ function Abx() {
         justifyContent: "center",
       }}
     >
-      <h1>test1236</h1>
+      <h1 className='outline outline-2 outline-red-500'>test1236</h1>
 
     </div>
   );
