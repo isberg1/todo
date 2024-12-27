@@ -14,10 +14,9 @@ window.onload = () => {
   link.type = 'text/json';
   link.href = '/todo/manifest.json';
   document.head.appendChild(link);
-  //   { rel: "manifest", type: "text/json", href: "/todo/manifest.json" }
-};
 
-console.log('Hello from main');
+  document.body.className = 'themDarkBlue';
+};
 
 const body = document.getElementsByTagName('body')[0];
 if (body) {
