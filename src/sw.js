@@ -1,16 +1,16 @@
-var cacheName = 'hello-pwa';
-var filesToCache = [
+const cacheName = 'hello-pwa';
+const filesToCache = [
   '/todo/',
   '/todo/index.html',
   '/todo/css/style.css',
-  '/todo/main.js'
+  '/todo/main.js',
 ];
-console.log("SW running")
+console.log('SW running');
 
 /* Start the service worker and cache all of the app's content */
-self.addEventListener('install', function (e) {
+self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(cacheName).then(function (cache) {
+    caches.open(cacheName).then((cache) => {
       return cache.addAll(filesToCache);
     })
   );
@@ -18,9 +18,9 @@ self.addEventListener('install', function (e) {
 });
 
 /* Serve cached content when offline */
-self.addEventListener('fetch', function (e) {
+self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then(function (response) {
+    caches.match(e.request).then((response) => {
       return response || fetch(e.request);
     })
   );
