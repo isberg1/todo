@@ -1,7 +1,7 @@
 import React, { } from 'react';
 import { usePersistState } from './usePersistState';
 import { Item } from './type';
-import { List } from './Item';
+import { List } from './List';
 import { Form } from './Form';
 
 export function Todo() {

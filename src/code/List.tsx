@@ -34,6 +34,11 @@ export function List({ list, setList }: Props) {
               })}
             >
               <button
+                onKeyDown={(e) => {
+                  if (e.code === 'Enter' || e.code === 'Space') {
+                    setStart(Date.now());
+                  }
+                }}
                 onMouseDown={() => setStart(Date.now())}
                 onClick={() => {
                   setList((old) => {
@@ -53,11 +58,11 @@ export function List({ list, setList }: Props) {
                   });
                   setStart(0);
                 }}
-                className=' w-full outline outline-purple-400 '
+                className='w-full'
               >
                 {item.name}
               </button>
-              <span className='w-10 text-center outline outline-yellow-400'>
+              <span className='w-10 text-center'>
                 {item.quantity}
               </span>
             </span>
