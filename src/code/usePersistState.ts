@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Setter } from './type';
 
 type ValidTypes<T> = string | number| boolean|object |Array<T>
 
-type Setter<T> = ((v: T) => void) | ((oldT: T) => T)
-type SetStateAction<S> = S | ((prevState: S) => S);
-
 export function usePersistState<T extends ValidTypes<T>>(val: T, key: string):
- [T, (settter: T | ((oldV: T) => T)) => void] {
+ [T, Setter<T>] {
   const [state, setStatePrivate] = useState<T>(val);
   const [ready, setReady] = useState(false);
 

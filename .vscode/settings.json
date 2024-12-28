@@ -1,4 +1,7 @@
 {
-    "liveServer.settings.root": "/docs",
-    "editor.detectIndentation": false
+  "liveServer.settings.root": "/docs",
+  "editor.detectIndentation": false,
+  "search.exclude": {
+    "**/docs/**": true
+  }
 }
