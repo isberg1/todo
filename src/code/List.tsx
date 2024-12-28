@@ -25,12 +25,13 @@ export function List({ list, setList }: Props) {
     <ul className='w-full flex flex-col gap-1 my-2'>
       {list.map((item) => {
         return (
-          <li className='w-full'>
+          <li className='w-ful'>
             <span
-              className={cn('w-full flex justify-between', {
+              className={cn('w-full min-h-11  flex justify-between rounded', {
                 'bg-green-500': item.state === 'show',
                 'bg-pink-900': item.state === 'delete',
                 'bg-blue-500': item.state === 'edit',
+                'outline outline-red-500': false,
               })}
             >
               <button
@@ -40,6 +41,7 @@ export function List({ list, setList }: Props) {
                   }
                 }}
                 onMouseDown={() => setStart(Date.now())}
+                onTouchStart={() => setStart(Date.now())}
                 onClick={() => {
                   setList((old) => {
                     const tmp = [...old];
@@ -62,7 +64,7 @@ export function List({ list, setList }: Props) {
               >
                 {item.name}
               </button>
-              <span className='w-10 text-center'>
+              <span className='w-10 flex justify-center items-center'>
                 {item.quantity}
               </span>
             </span>
