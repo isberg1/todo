@@ -43,12 +43,16 @@ export function Settings({ setting, setSetting }: Props) {
       <dialog
         ref={dialogEle}
         open={show}
-        className='max-w-[95vw]'
+        className={classNames('max-w-[95vw] border-white rounded border-2 scroll-mt-4', {
+          [setting.theme.bg]: true,
+          [setting.theme.textColor]: true,
+        })}
       >
 
-        <div className='w-[90vw] h-full p-1 flex flex-col justify-center items-center'>
-          <div className='w-full flex justify-end'>
+        <div className='w-[60vw] h-full p-1 flex flex-col justify-center items-center gap-1'>
+          <div className='w-full flex justify-end sticky top-0 h-9'>
             <button
+              className='right-0 '
               onClick={() => {
                 setShow(false);
                 dialogEle.current?.close();
@@ -58,9 +62,10 @@ export function Settings({ setting, setSetting }: Props) {
             </button>
 
           </div>
-          <h1>Settings</h1>
+          <h1 className='-mt-1 underline'>Settings</h1>
           {textSizes.map((val) => (
             <button
+              className='shadow px-2 min-h-11'
               onClick={() => setSetting((old) => ({ ...old, textSize: val }))}
             >{val}
             </button>

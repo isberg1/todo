@@ -7,8 +7,8 @@ import { Form } from './Form';
 import { Settings } from './Settings';
 
 const defaultTheme: Setting['theme'] = {
-  bg: '#171d25',
-  textColor: 'aliceblue',
+  bg: 'bg-[#171d25]',
+  textColor: 'text-[aliceblue]',
   form: {
     show: 'green',
     edit: 'blue',
@@ -35,8 +35,8 @@ export function Todo() {
       [setting.textSize]: true,
     })}
     >
-      <div className='w-full sm:max-w-96 p-4 '>
-        <div className='w-full h-full flex justify-end outline-red-500 outline'>
+      <div className='w-full sm:max-w-[60vw] p-4 '>
+        <div className='w-full h-full flex justify-end '>
           <Settings
             setting={setting}
             setSetting={setSetting}

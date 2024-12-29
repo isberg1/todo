@@ -28,48 +28,46 @@ export function List({
     <ul className='w-full flex flex-col gap-1 my-2'>
       {list.map((item) => {
         return (
-          <li className='w-ful'>
-            <span
-              className={cn('w-full min-h-11  flex justify-between rounded', {
-                [setting.theme.list.show]: item.state === 'show',
-                [setting.theme.list.delete]: item.state === 'delete',
-                [setting.theme.list.edit]: item.state === 'edit',
-                'outline outline-red-500': false,
-              })}
-            >
-              <button
-                onKeyDown={(e) => {
-                  if (e.code === 'Enter' || e.code === 'Space') {
-                    setStart(Date.now());
-                  }
-                }}
-                onMouseDown={() => setStart(Date.now())}
-                onTouchStart={() => setStart(Date.now())}
-                onClick={() => {
-                  setList((old) => {
-                    const tmp = [...old];
-                    const obj = tmp.find((v) => v.id === item.id);
-                    if (!obj) return old;
+          <li
+            className={cn('w-full min-h-11 md:min-h-9  flex justify-between rounded', {
+              [setting.theme.list.show]: item.state === 'show',
+              [setting.theme.list.delete]: item.state === 'delete',
+              [setting.theme.list.edit]: item.state === 'edit',
+              'outline outline-red-500': false,
+            })}
+          >
+            <button
+              onKeyDown={(e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                  setStart(Date.now());
+                }
+              }}
+              onMouseDown={() => setStart(Date.now())}
+              onTouchStart={() => setStart(Date.now())}
+              onClick={() => {
+                setList((old) => {
+                  const tmp = [...old];
+                  const obj = tmp.find((v) => v.id === item.id);
+                  if (!obj) return old;
 
-                    if (obj.state === 'show') {
-                      const isLongClick = (Date.now() - start) > 500;
-                      obj.state = (isLongClick && canEdit) ? 'edit' : 'delete';
-                    } else if (obj.state === 'delete') {
-                      obj.state = 'show';
-                    } else if (obj.state === 'edit') {
-                      obj.state = 'show';
-                    }
-                    return tmp;
-                  });
-                  setStart(0);
-                }}
-                className='w-full'
-              >
-                {item.name}
-              </button>
-              <span className='w-10 flex justify-center items-center'>
-                {item.quantity}
-              </span>
+                  if (obj.state === 'show') {
+                    const isLongClick = (Date.now() - start) > 500;
+                    obj.state = (isLongClick && canEdit) ? 'edit' : 'delete';
+                  } else if (obj.state === 'delete') {
+                    obj.state = 'show';
+                  } else if (obj.state === 'edit') {
+                    obj.state = 'show';
+                  }
+                  return tmp;
+                });
+                setStart(0);
+              }}
+              className='w-full my-1'
+            >
+              {item.name}
+            </button>
+            <span className='w-10 flex justify-center items-center'>
+              {item.quantity}
             </span>
           </li>
         );
