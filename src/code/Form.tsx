@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Item, Setter } from './type';
+import { Item, Setter, Setting } from './type';
 
 const defaultItem: Item = {
   id: `${'-'}${0}`,
@@ -11,9 +11,12 @@ const defaultItem: Item = {
 type Props = {
   list: Item[];
   setList: Setter<Item[]>;
+  setting: Setting;
 }
 
-export function Form({ list, setList }: Props) {
+export function Form({
+  list, setList, setting,
+}: Props) {
   const [input, setInput] = useState(defaultItem);
 
   const buttonState = useMemo(() => {

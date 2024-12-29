@@ -6,3 +6,21 @@ export type Item = {
 }
 
 export type Setter<T> = (settter: T | ((oldV: T) => T)) => void
+
+export type Setting = {
+  theme: {
+    bg: string;
+    textColor: string;
+    form: {
+      show: string;
+      edit: string;
+      delete: string;
+    };
+    list: {
+      show: string;
+      edit: string;
+      delete: string;
+    };
+  };
+  textSize: string;
+}

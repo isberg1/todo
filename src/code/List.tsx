@@ -1,13 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import cn from 'classnames';
-import { Item, Setter } from './type';
+import { Item, Setter, Setting } from './type';
 
 type Props = {
   list: Item[];
   setList: Setter<Item[]>;
+  setting: Setting;
 }
 
-export function List({ list, setList }: Props) {
+export function List({
+  list, setList, setting,
+}: Props) {
   const [start, setStart] = useState<number>(0);
 
   const canEdit = useMemo(() => {
@@ -28,9 +31,9 @@ export function List({ list, setList }: Props) {
           <li className='w-ful'>
             <span
               className={cn('w-full min-h-11  flex justify-between rounded', {
-                'bg-green-500': item.state === 'show',
-                'bg-pink-900': item.state === 'delete',
-                'bg-blue-500': item.state === 'edit',
+                [setting.theme.list.show]: item.state === 'show',
+                [setting.theme.list.delete]: item.state === 'delete',
+                [setting.theme.list.edit]: item.state === 'edit',
                 'outline outline-red-500': false,
               })}
             >
