@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Setter, Setting } from './type';
 import { IconSettings } from '../icons/setting-5-svgrepo-com';
@@ -25,11 +25,16 @@ export function Settings({ setting, setSetting }: Props) {
   const [show, setShow] = useState(false);
   const dialogEle = useRef<HTMLDialogElement>(null);
 
+  // set global styles from settings
+  useEffect(() => {
+    document.body.classList.add(setting.theme.textColor);
+    document.body.classList.add(setting.theme.bg);
+  }, [setting.theme.bg, setting.theme.textColor]);
+
   return (
     <>
       <button
         className={classNames('p-1  flex justify-center items-center', {
-          [setting.textSize]: true,
           [setting.theme.textColor]: true,
         })}
         onClick={() => {

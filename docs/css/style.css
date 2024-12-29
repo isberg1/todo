@@ -3,9 +3,7 @@
 @tailwind utilities;
 
 
-.themDarkBlue {
-  background-color: #171d25;
-  color: aliceblue;
+.fonts {
   font-family: 'Comic Sans MS', monospace;
 }
 

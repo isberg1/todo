@@ -15,7 +15,7 @@ window.onload = () => {
   link.href = '/todo/manifest.json';
   document.head.appendChild(link);
 
-  document.body.className = 'themDarkBlue';
+  document.body.classList.add('fonts');
 };
 
 const body = document.getElementsByTagName('body')[0];
