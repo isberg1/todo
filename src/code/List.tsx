@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { Item, Setter, Setting } from './type';
 
@@ -11,7 +11,7 @@ type Props = {
 export function List({
   list, setList, setting,
 }: Props) {
-  const [start, setStart] = useState<Item | undefined>();
+  const [editObj, setEditObj] = useState<Item | undefined>();
   const id = useRef<ReturnType<typeof setTimeout>>();
 
   const canEdit = useMemo(() => {
@@ -25,13 +25,14 @@ export function List({
     return nrOfEditItems < 1;
   }, [list]);
 
+  // longClick logic, do this via useEffect to handle both onMouseDown and onTouchStart being invoked for touch events
   useEffect(() => {
-    if (!start) return () => { };
+    if (!editObj) return () => { };
 
     id.current = setTimeout(() => {
       setList((old) => {
         const tmp = [...old];
-        const obj = tmp.find((v) => v.id === start?.id);
+        const obj = tmp.find((v) => v.id === editObj?.id);
         if (!obj) return old;
 
         if (obj.state === 'show') {
@@ -40,19 +41,19 @@ export function List({
 
         return tmp;
       });
-      id.current = undefined;
+      setEditObj(undefined);
     }, 500);
 
     return () => clearTimeout(id.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start]);
+  }, [editObj]);
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
       {list.map((item) => {
         return (
           <li
-            className={cn('w-full min-h-7 flex justify-between rounded', {
+            className={cn('w-full min-h-9 md:min-h-7 flex justify-between rounded', {
               [setting.theme.list.show]: item.state === 'show',
               [setting.theme.list.delete]: item.state === 'delete',
               [setting.theme.list.edit]: item.state === 'edit',
@@ -60,24 +61,21 @@ export function List({
             })}
           >
             <button
-              onKeyDown={(e) => {
-                if (e.code === 'Enter' || e.code === 'Space') {
-                  setStart({ ...item });
-                }
-              }}
+              // longClick
               onMouseDown={() => {
-                setStart({ ...item });
+                setEditObj({ ...item });
               }}
+              // longClick
               onTouchStart={() => {
-                setStart({ ...item });
+                setEditObj({ ...item });
               }}
+              // normal Click
               onClick={() => {
-                if (id.current) {
-                  clearTimeout(id.current);
-                } else {
+                if (!editObj) {
                   return;
                 }
 
+                setEditObj(undefined);
                 setList((old) => {
                   const tmp = [...old];
                   const obj = tmp.find((v) => v.id === item.id);
@@ -92,7 +90,6 @@ export function List({
                   }
                   return tmp;
                 });
-                setStart(undefined);
               }}
               className='w-full my-1'
             >

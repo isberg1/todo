@@ -86,7 +86,7 @@ export function Form({
       <div className='flex flex-col justify-between gap-2 mb-4 mt-1'>
         <div className='w-full relative  '>
           <input
-            className='w-full shadow-2xl rounded-sm p-2 text-black min-h-7'
+            className='w-full shadow-2xl rounded-sm p-2 text-black min-h-9 md:min-h-7'
             type='text'
             onChange={(e) => setInput((old) => ({ ...old, name: e.target.value }))}
             value={input.name}
