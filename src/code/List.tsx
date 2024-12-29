@@ -25,11 +25,11 @@ export function List({
   }, [list]);
 
   return (
-    <ul className='w-full flex flex-col gap-1 my-2'>
+    <ul className='w-full flex flex-col gap-2 my-2'>
       {list.map((item) => {
         return (
           <li
-            className={cn('w-full min-h-11 md:min-h-9  flex justify-between rounded', {
+            className={cn('w-full min-h-7 flex justify-between rounded', {
               [setting.theme.list.show]: item.state === 'show',
               [setting.theme.list.delete]: item.state === 'delete',
               [setting.theme.list.edit]: item.state === 'edit',

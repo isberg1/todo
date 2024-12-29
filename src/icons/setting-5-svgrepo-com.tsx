@@ -9,8 +9,9 @@ type Props = {
 export function IconSettings({ setting }: Props) {
   return (
     <svg
-      className={classNames('min-h-9 min-w-9', {
+      className={classNames('min-h-6 min-w-6', {
         [setting.theme.textColor]: true,
+        [setting.textSize]: true,
       })}
       height='1em'
       width='1em'

@@ -54,10 +54,10 @@ export function Settings({ setting, setSetting }: Props) {
         })}
       >
 
-        <div className='w-[60vw] h-full p-1 flex flex-col justify-center items-center gap-1'>
+        <div className='w-[85vw] md:w-[60vw] h-full p-1 flex flex-col justify-center items-center gap-1'>
           <div className='w-full flex justify-end sticky top-0 h-9'>
             <button
-              className='right-0 '
+              className='right-0 mr-2 '
               onClick={() => {
                 setShow(false);
                 dialogEle.current?.close();
