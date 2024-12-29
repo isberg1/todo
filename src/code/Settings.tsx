@@ -28,7 +28,7 @@ export function Settings({ setting, setSetting }: Props) {
   return (
     <>
       <button
-        className={classNames('outline outline-yellow-500 m-3  flex justify-center items-center', {
+        className={classNames('p-1  flex justify-center items-center', {
           [setting.textSize]: true,
           [setting.theme.textColor]: true,
         })}
@@ -40,16 +40,21 @@ export function Settings({ setting, setSetting }: Props) {
         <IconSettings setting={setting} />
       </button>
 
-      <dialog ref={dialogEle} open={show}>
+      <dialog
+        ref={dialogEle}
+        open={show}
+        className='max-w-[95vw]'
+      >
 
-        <div className='w-full h-full flex flex-col justify-center items-center'>
+        <div className='w-[90vw] h-full p-1 flex flex-col justify-center items-center'>
           <div className='w-full flex justify-end'>
             <button
               onClick={() => {
                 setShow(false);
                 dialogEle.current?.close();
               }}
-            >X
+            >
+              X
             </button>
 
           </div>

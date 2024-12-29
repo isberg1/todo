@@ -11,7 +11,7 @@ export function IconSettings({ setting }: Props) {
     <svg
       height='2em'
       width='2em'
-      viewBox='0 0 24 24'
+      viewBox='4 4 16 16'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
