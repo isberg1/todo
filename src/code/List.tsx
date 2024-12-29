@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { Item, Setter, Setting } from './type';
 
@@ -11,7 +11,7 @@ type Props = {
 export function List({
   list, setList, setting,
 }: Props) {
-  const [start, setStart] = useState<number>(0);
+  const [start, setStart] = useState<Item | undefined>();
   const id = useRef<ReturnType<typeof setTimeout>>();
 
   const canEdit = useMemo(() => {
@@ -25,13 +25,13 @@ export function List({
     return nrOfEditItems < 1;
   }, [list]);
 
-  const onDown = useCallback((item: Item) => {
-    setStart(Date.now());
+  useEffect(() => {
+    if (!start) return () => { };
+
     id.current = setTimeout(() => {
-      id.current = undefined;
       setList((old) => {
         const tmp = [...old];
-        const obj = tmp.find((v) => v.id === item.id);
+        const obj = tmp.find((v) => v.id === start?.id);
         if (!obj) return old;
 
         if (obj.state === 'show') {
@@ -40,8 +40,12 @@ export function List({
 
         return tmp;
       });
+      id.current = undefined;
     }, 500);
-  }, [canEdit, setList]);
+
+    return () => clearTimeout(id.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [start]);
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
@@ -58,11 +62,15 @@ export function List({
             <button
               onKeyDown={(e) => {
                 if (e.code === 'Enter' || e.code === 'Space') {
-                  setStart(Date.now());
+                  setStart({ ...item });
                 }
               }}
-              onMouseDown={() => onDown(item)}
-              onTouchStart={() => onDown(item)}
+              onMouseDown={() => {
+                setStart({ ...item });
+              }}
+              onTouchStart={() => {
+                setStart({ ...item });
+              }}
               onClick={() => {
                 if (id.current) {
                   clearTimeout(id.current);
@@ -73,7 +81,6 @@ export function List({
                 setList((old) => {
                   const tmp = [...old];
                   const obj = tmp.find((v) => v.id === item.id);
-                  console.log(obj);
                   if (!obj) return old;
 
                   if (obj.state === 'show') {
@@ -85,7 +92,7 @@ export function List({
                   }
                   return tmp;
                 });
-                setStart(0);
+                setStart(undefined);
               }}
               className='w-full my-1'
             >
