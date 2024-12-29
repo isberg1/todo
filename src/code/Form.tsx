@@ -83,17 +83,17 @@ export function Form({
 
   return (
     <form onSubmit={onSubmit}>
-      <div className='flex flex-col justify-between gap-1'>
+      <div className='flex flex-col justify-between gap-2 mb-4 mt-1'>
         <div className='w-full relative  '>
           <input
-            className='w-full shadow-2xl rounded-sm p-2 text-black min-h-11'
+            className='w-full shadow-2xl rounded-sm p-2 text-black min-h-7'
             type='text'
             onChange={(e) => setInput((old) => ({ ...old, name: e.target.value }))}
             value={input.name}
           />
           <button
             type='button'
-            className='text-black absolute z-10 right-0 h-full w-10  '
+            className='text-black absolute z-10 right-0 pr-2 h-full w-10  '
             onClick={(e) => {
               e.preventDefault();
               setInput(defaultItem);
@@ -104,7 +104,7 @@ export function Form({
         </div>
         <button
           type='submit'
-          className='border-2 border-blue-400 rounded-sm min-h-11 capitalize'
+          className='border-2 border-blue-400 rounded-sm min-h-7 capitalize'
         >
           {buttonState}
         </button>

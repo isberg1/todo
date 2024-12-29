@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { Item, Setter, Setting } from './type';
 
@@ -12,6 +12,7 @@ export function List({
   list, setList, setting,
 }: Props) {
   const [start, setStart] = useState<number>(0);
+  const id = useRef<ReturnType<typeof setTimeout>>();
 
   const canEdit = useMemo(() => {
     const nrOfEditItems = list.reduce((prev, cur) => {
@@ -23,6 +24,24 @@ export function List({
 
     return nrOfEditItems < 1;
   }, [list]);
+
+  const onDown = useCallback((item: Item) => {
+    setStart(Date.now());
+    id.current = setTimeout(() => {
+      id.current = undefined;
+      setList((old) => {
+        const tmp = [...old];
+        const obj = tmp.find((v) => v.id === item.id);
+        if (!obj) return old;
+
+        if (obj.state === 'show') {
+          obj.state = (canEdit) ? 'edit' : 'delete';
+        }
+
+        return tmp;
+      });
+    }, 500);
+  }, [canEdit, setList]);
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
@@ -42,17 +61,23 @@ export function List({
                   setStart(Date.now());
                 }
               }}
-              onMouseDown={() => setStart(Date.now())}
-              onTouchStart={() => setStart(Date.now())}
+              onMouseDown={() => onDown(item)}
+              onTouchStart={() => onDown(item)}
               onClick={() => {
+                if (id.current) {
+                  clearTimeout(id.current);
+                } else {
+                  return;
+                }
+
                 setList((old) => {
                   const tmp = [...old];
                   const obj = tmp.find((v) => v.id === item.id);
+                  console.log(obj);
                   if (!obj) return old;
 
                   if (obj.state === 'show') {
-                    const isLongClick = (Date.now() - start) > 500;
-                    obj.state = (isLongClick && canEdit) ? 'edit' : 'delete';
+                    obj.state = 'delete';
                   } else if (obj.state === 'delete') {
                     obj.state = 'show';
                   } else if (obj.state === 'edit') {
