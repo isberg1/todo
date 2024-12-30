@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { usePersistState } from './usePersistState';
 import { Item, Setting } from './type';
@@ -10,12 +10,12 @@ const defaultTheme: Setting['theme'] = {
   bg: 'bg-[#171d25]',
   textColor: 'text-[aliceblue]',
   form: {
-    show: 'green',
-    edit: 'blue',
-    delete: 'orange',
+    show: 'bg-green-700',
+    edit: 'bg-blue-600',
+    delete: 'bg-orange-500',
   },
   list: {
-    show: 'bg-green-500',
+    show: 'bg-[#2b394a]',
     edit: 'bg-blue-500',
     delete: 'bg-pink-900',
   },

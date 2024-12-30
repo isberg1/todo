@@ -1,4 +1,5 @@
-import React, { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
 
 const defaultItem: Item = {
@@ -18,6 +19,8 @@ export function Form({
   list, setList, setting,
 }: Props) {
   const [input, setInput] = useState(defaultItem);
+  const [deleteActive, setDeleteActive] = useState(false);
+  const canDelete = useRef(false);
 
   const buttonState = useMemo(() => {
     if (list.some((item) => item.state === 'edit')) {
@@ -62,7 +65,10 @@ export function Form({
         break;
       }
       case 'delete': {
-        setList((old) => old.filter((item) => item.state !== 'delete'));
+        if (canDelete.current) {
+          setList((old) => old.filter((item) => item.state !== 'delete'));
+          canDelete.current = false;
+        }
         break;
       }
       case 'add': {
@@ -81,6 +87,23 @@ export function Form({
     }
   }, [buttonState, input, setList]);
 
+  const activateDel = useCallback(() => {
+    if (buttonState === 'delete') {
+      setDeleteActive(true);
+    }
+  }, [buttonState]);
+
+  // set delete longClick flag
+  useEffect(() => {
+    if (!deleteActive) return () => { };
+
+    const id = setTimeout(() => {
+      canDelete.current = true;
+    }, 1000);
+
+    return () => { clearTimeout(id); };
+  }, [deleteActive]);
+
   return (
     <form onSubmit={onSubmit}>
       <div className='flex flex-col justify-between gap-2 mb-4 mt-1'>
@@ -93,7 +116,7 @@ export function Form({
           />
           <button
             type='button'
-            className='text-black absolute z-10 right-0 pr-2 h-full w-10  '
+            className='text-black absolute z-10 right-0 pr-2 h-full w-10'
             onClick={(e) => {
               e.preventDefault();
               setInput(defaultItem);
@@ -103,8 +126,20 @@ export function Form({
           </button>
         </div>
         <button
+          onMouseDown={() => { activateDel(); }}
+          onTouchStart={() => { activateDel(); }}
+          onMouseUp={() => { setDeleteActive(false); }}
+          onTouchEnd={() => { setDeleteActive(false); }}
+          onTouchCancel={() => { setDeleteActive(false); }}
+          onMouseOut={() => { setDeleteActive(false); }}
+          onBlur={() => { setDeleteActive(false); }}
           type='submit'
-          className='border-2 border-blue-400 rounded-sm min-h-7 capitalize'
+          className={classNames('border-2 border-white rounded-sm min-h-7 capitalize', {
+            [setting.theme.form.show]: buttonState === 'add',
+            [setting.theme.form.edit]: buttonState === 'edit',
+            [setting.theme.form.delete]: buttonState === 'delete',
+            'animate-[pulse_1s]  ease-[cubic-bezier(0.7, 0, 0.84, 0)]': deleteActive,
+          })}
         >
           {buttonState}
         </button>
