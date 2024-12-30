@@ -33,6 +33,7 @@ export function Settings({ setting, setSetting }: Props) {
   }));
   const dialogEle = useRef<HTMLDialogElement>(null);
 
+  // update slider when settings changes
   useEffect(() => {
     const idx = textSizes.findIndex((ele) => {
       if (ele === setting.textSize) {
@@ -42,11 +43,6 @@ export function Settings({ setting, setSetting }: Props) {
     });
     setSetSliderValue(idx);
   }, [setting.textSize]);
-
-  useEffect(() => {
-    setShow(true);
-    dialogEle.current?.showModal();
-  }, []);
 
   // set global styles from settings
   useEffect(() => {
