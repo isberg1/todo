@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import cn from 'classnames';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
 
 type Props = {
@@ -53,7 +54,7 @@ export function List({
       {list.map((item) => {
         return (
           <li
-            className={cn('w-full min-h-9 md:min-h-7 flex justify-between rounded', {
+            className={classNames('break-all w-full min-h-9 md:min-h-7 flex justify-between rounded-lg px-1', {
               [setting.theme.list.show]: item.state === 'show',
               [setting.theme.list.delete]: item.state === 'delete',
               [setting.theme.list.edit]: item.state === 'edit',
@@ -95,12 +96,146 @@ export function List({
             >
               {item.name}
             </button>
-            <span className='w-10 flex justify-center items-center'>
-              {item.quantity}
-            </span>
+            <Quantity item={item} setList={setList} settings={setting} />
           </li>
         );
       })}
     </ul>
+  );
+}
+
+function debounce(func: (...a: any[]) => any, wait: number) {
+  let timeout: ReturnType<typeof setTimeout>;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+
+const minHorizontalMove = 1; // Minimum horizontal movement to trigger swipe
+const withinMs = 100000; // Maximum time duration for swipe
+
+type StartSwipe = {
+  startX: number;
+  startTime: number;
+}
+
+type QaProps = {
+  item: Item;
+  setList: Setter<Item[]>;
+  settings: Setting;
+}
+function Quantity({
+  item, setList, settings,
+}: QaProps) {
+  const startSwipe = useRef<StartSwipe | undefined>();
+  const [posSwipe, setPosSwipe] = useState(0);
+
+  const resetSwipe = useCallback(() => {
+    setPosSwipe(0);
+    startSwipe.current = undefined;
+  }, []);
+
+  const onSwipeStart = useCallback(debounce((startX: number) => {
+    startSwipe.current = {
+      startTime: Date.now(),
+      startX,
+    };
+  }, 10), []);
+
+  const onSwipeMove = useCallback((endXPos: number) => {
+    if (!startSwipe.current) return;
+
+    const endTime = Date.now();
+    const moveX = endXPos - startSwipe.current.startX;
+    const elapsedTime = endTime - startSwipe.current.startTime;
+
+    switch (true) {
+      case elapsedTime > withinMs: {
+        resetSwipe();
+        return;
+      }
+      case Math.abs(moveX) < minHorizontalMove: {
+        return;
+      }
+      case moveX < -50: {
+        resetSwipe();
+        setList((old) => {
+          if (item.quantity === 1) return old;
+
+          const tmp = [...old];
+          const idx = tmp.findIndex((ele) => ele.id === item.id);
+          tmp[idx].quantity -= 1;
+
+          return tmp;
+        });
+        return;
+      }
+      case moveX > 50: {
+        resetSwipe();
+        setList((old) => {
+          const tmp = [...old];
+          const idx = tmp.findIndex((ele) => ele.id === item.id);
+          tmp[idx].quantity += 1;
+
+          return tmp;
+        });
+        return;
+      }
+      default: {
+        setPosSwipe(moveX);
+      }
+    }
+  }, [item.id, item.quantity, resetSwipe, setList]);
+
+  return (
+    <span
+      onTouchEnd={() => {
+        resetSwipe();
+      }}
+      onTouchStart={(e) => {
+        if (e.touches?.[0] === undefined) return;
+
+        onSwipeStart(e.touches[0].pageX);
+      }}
+      onTouchMove={(e) => {
+        if (!startSwipe.current) return;
+
+        onSwipeMove(e.changedTouches[0].pageX);
+      }}
+      onMouseDown={(e) => {
+        onSwipeStart(e.pageX);
+        const onMouseMove = (x: MouseEvent) => {
+          if (!startSwipe.current) return;
+
+          onSwipeMove(x.pageX);
+        };
+        document.addEventListener('mousemove', onMouseMove);
+
+        document.addEventListener('mouseup', () => {
+          if (!startSwipe.current) return;
+
+          document.removeEventListener('mousemove', onMouseMove);
+          resetSwipe();
+        }, { once: true }
+        );
+      }}
+      className={classNames('min-w-14 md:min-w-10 px-1 w-fit flex justify-center items-center select-none break-normal', {
+        'bg-blue-400 block': posSwipe > 0,
+        'bg-red-400 block': posSwipe < 0,
+      })}
+    >
+      <span className={classNames('', {
+        hidden: !(posSwipe > 0),
+      })}
+      >+
+      </span>
+      <span className={classNames('', {
+        hidden: !(posSwipe < 0),
+      })}
+      >-
+      </span>
+      {item.quantity}
+    </span>
   );
 }
