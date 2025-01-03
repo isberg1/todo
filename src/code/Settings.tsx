@@ -79,7 +79,7 @@ export function Settings({ setting, setSetting }: Props) {
         }}
         ref={dialogEle}
         open={show}
-        className={classNames('max-w-[95vw] border-white rounded border-2 scroll-mt-4 backdrop:bg-black/50 backdrop:backdrop-blur-[1px]', {
+        className={classNames('max-w-[95vw] border-white rounded-lg border-2 scroll-mt-4 backdrop:bg-black/50 backdrop:backdrop-blur-[1px]', {
           [setting.theme.bg]: true,
           [setting.theme.textColor]: true,
         })}
@@ -118,7 +118,7 @@ export function Settings({ setting, setSetting }: Props) {
 
             <div className='w-full flex flex-col justify-center items-center'>
               <button
-                className='border-solid border-white border-2 px-2 rounded'
+                className='border-solid border-white border-2 px-2 rounded-lg'
                 onClick={() => {
                   try {
                     localStorage.clear();

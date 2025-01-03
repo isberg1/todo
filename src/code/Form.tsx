@@ -63,7 +63,8 @@ export function Form({
     <div className='flex flex-col justify-between gap-2 mb-4 mt-1'>
       <div className='w-full relative  '>
         <input
-          className='w-full shadow-2xl rounded-sm p-2 text-black min-h-9 md:min-h-7'
+          className='w-full shadow-2xl rounded p-2 text-black min-h-9 md:min-h-7 break-all
+          '
           type='text'
           onChange={(e) => setInput((old) => ({ ...old, name: e.target.value }))}
           value={input.name}
@@ -137,7 +138,7 @@ export function Form({
             setInput(defaultItem);
           }
         }}
-        className={classNames('border-2 border-white rounded-sm min-h-7 capitalize', {
+        className={classNames('border-2 border-white rounded-lg min-h-7 capitalize', {
           [setting.theme.form.show]: buttonState === 'add',
           [setting.theme.form.edit]: buttonState === 'edit',
           [setting.theme.form.delete]: buttonState === 'delete',
