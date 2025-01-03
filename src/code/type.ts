@@ -20,6 +20,8 @@ export type Setting = {
       show: string;
       edit: string;
       delete: string;
+      addQuantity: string;
+      subQuantity: string;
     };
   };
   textSize: string;

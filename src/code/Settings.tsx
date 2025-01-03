@@ -6,8 +6,8 @@ import { Setter, Setting } from './type';
 import { IconSettings } from '../icons/setting-5-svgrepo-com';
 
 type Props = {
-  setting: Setting;
-  setSetting: Setter<Setting>;
+  settings: Setting;
+  setSettings: Setter<Setting>;
 
 }
 
@@ -23,10 +23,10 @@ const textSizes = [
   'text-5xl',
 ];
 
-export function Settings({ setting, setSetting }: Props) {
+export function Settings({ settings, setSettings }: Props) {
   const [show, setShow] = useState(false);
   const [sliderValue, setSetSliderValue] = useState(() => textSizes.findIndex((ele, idx) => {
-    if (ele === setting.textSize) {
+    if (ele === settings.textSize) {
       return true;
     }
     return false;
@@ -36,32 +36,32 @@ export function Settings({ setting, setSetting }: Props) {
   // update slider when settings changes
   useEffect(() => {
     const idx = textSizes.findIndex((ele) => {
-      if (ele === setting.textSize) {
+      if (ele === settings.textSize) {
         return true;
       }
       return false;
     });
     setSetSliderValue(idx);
-  }, [setting.textSize]);
+  }, [settings.textSize]);
 
   // set global styles from settings
   useEffect(() => {
-    document.body.classList.add(setting.theme.textColor);
-    document.body.classList.add(setting.theme.bg);
-  }, [setting.theme.bg, setting.theme.textColor]);
+    document.body.classList.add(settings.theme.textColor);
+    document.body.classList.add(settings.theme.bg);
+  }, [settings.theme.bg, settings.theme.textColor]);
 
   return (
     <>
       <button
         className={classNames('p-1 flex justify-center items-center', {
-          [setting.theme.textColor]: true,
+          [settings.theme.textColor]: true,
         })}
         onClick={() => {
           setShow(true);
           dialogEle.current?.showModal();
         }}
       >
-        <IconSettings setting={setting} />
+        <IconSettings settings={settings} />
       </button>
 
       <dialog
@@ -80,8 +80,8 @@ export function Settings({ setting, setSetting }: Props) {
         ref={dialogEle}
         open={show}
         className={classNames('max-w-[95vw] border-white rounded-lg border-2 scroll-mt-4 backdrop:bg-black/50 backdrop:backdrop-blur-[1px]', {
-          [setting.theme.bg]: true,
-          [setting.theme.textColor]: true,
+          [settings.theme.bg]: true,
+          [settings.theme.textColor]: true,
         })}
       >
 
@@ -111,22 +111,33 @@ export function Settings({ setting, setSetting }: Props) {
                 value={sliderValue}
                 onChange={(e) => {
                   setSetSliderValue(Number(e.target.value));
-                  setSetting((old) => ({ ...old, textSize: textSizes[Number(e.target.value)] }));
+                  setSettings((old) => ({ ...old, textSize: textSizes[Number(e.target.value)] }));
                 }}
               />
             </div>
 
-            <div className='w-full flex flex-col justify-center items-center'>
+            <div className='w-full flex flex-col justify-center items-center gap-2'>
               <button
                 className='border-solid border-white border-2 px-2 rounded-lg'
                 onClick={() => {
                   try {
-                    localStorage.clear();
+                    localStorage.removeItem('setting');
                     window.location.reload();
                   } catch (error) { }
                 }}
               >
-                Reset storage
+                Reset settings
+              </button>
+              <button
+                className='border-solid border-white border-2 px-2 rounded-lg'
+                onClick={() => {
+                  try {
+                    localStorage.removeItem('itemList');
+                    window.location.reload();
+                  } catch (error) { }
+                }}
+              >
+                Reset content
               </button>
             </div>
           </div>

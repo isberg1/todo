@@ -18,6 +18,8 @@ const defaultTheme: Setting['theme'] = {
     show: 'bg-[#2b394a]',
     edit: 'bg-blue-500',
     delete: 'bg-pink-900',
+    addQuantity: 'bg-blue-500',
+    subQuantity: 'bg-pink-900',
   },
 };
 
@@ -28,30 +30,30 @@ const defaultSetting: Setting = {
 
 export function Todo() {
   const [list, setList] = usePersistState<Item[]>([], 'itemList');
-  const [setting, setSetting] = usePersistState<Setting>(defaultSetting, 'setting');
+  const [settings, setSettings] = usePersistState<Setting>(defaultSetting, 'setting');
 
   return (
     <div className={classNames('flex flex-col justify-center items-center', {
-      [setting.textSize]: true,
+      [settings.textSize]: true,
     })}
     >
       <div className='w-full sm:max-w-[60vw] p-4 '>
         <div className='w-full h-full flex justify-end '>
           <Settings
-            setting={setting}
-            setSetting={setSetting}
+            settings={settings}
+            setSettings={setSettings}
           />
         </div>
 
         <Form
           list={list}
           setList={setList}
-          setting={setting}
+          settings={settings}
         />
         <List
           list={list}
           setList={setList}
-          setting={setting}
+          settings={settings}
         />
       </div>
     </div>

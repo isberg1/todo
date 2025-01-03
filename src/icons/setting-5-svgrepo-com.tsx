@@ -3,15 +3,15 @@ import classNames from 'classnames';
 import { Setting } from '../code/type';
 
 type Props = {
-  setting: Setting;
+  settings: Setting;
 }
 
-export function IconSettings({ setting }: Props) {
+export function IconSettings({ settings }: Props) {
   return (
     <svg
       className={classNames('min-h-6 min-w-6', {
-        [setting.theme.textColor]: true,
-        [setting.textSize]: true,
+        [settings.theme.textColor]: true,
+        [settings.textSize]: true,
       })}
       height='1em'
       width='1em'

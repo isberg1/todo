@@ -6,11 +6,13 @@ import { Item, Setter, Setting } from './type';
 type Props = {
   list: Item[];
   setList: Setter<Item[]>;
-  setting: Setting;
+  settings: Setting;
 }
 
 export function List({
-  list, setList, setting,
+  list,
+  setList,
+  settings,
 }: Props) {
   const [editObj, setEditObj] = useState<Item | undefined>();
   const id = useRef<ReturnType<typeof setTimeout>>();
@@ -54,10 +56,10 @@ export function List({
       {list.map((item) => {
         return (
           <li
-            className={classNames('break-all w-full min-h-9 md:min-h-7 flex justify-between rounded-lg px-1', {
-              [setting.theme.list.show]: item.state === 'show',
-              [setting.theme.list.delete]: item.state === 'delete',
-              [setting.theme.list.edit]: item.state === 'edit',
+            className={classNames('break-all w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1', {
+              [settings.theme.list.show]: item.state === 'show',
+              [settings.theme.list.delete]: item.state === 'delete',
+              [settings.theme.list.edit]: item.state === 'edit',
               'outline outline-red-500': false,
             })}
           >
@@ -96,7 +98,7 @@ export function List({
             >
               {item.name}
             </button>
-            <Quantity item={item} setList={setList} settings={setting} />
+            <Quantity item={item} setList={setList} settings={settings} />
           </li>
         );
       })}
@@ -158,7 +160,7 @@ function Quantity({
       case Math.abs(moveX) < minHorizontalMove: {
         return;
       }
-      case moveX < -50: {
+      case moveX < -30: {
         resetSwipe();
         setList((old) => {
           if (item.quantity === 1) return old;
@@ -171,7 +173,7 @@ function Quantity({
         });
         return;
       }
-      case moveX > 50: {
+      case moveX > 30: {
         resetSwipe();
         setList((old) => {
           const tmp = [...old];
@@ -220,13 +222,15 @@ function Quantity({
         }, { once: true }
         );
       }}
-      className={classNames('min-w-14 md:min-w-10 px-1 w-fit flex justify-center items-center select-none break-normal', {
-        'bg-blue-400 block': posSwipe > 0,
-        'bg-red-400 block': posSwipe < 0,
+      className={classNames('w-fit min-w-7  px-2  flex justify-end items-center select-none break-normal rounded-e-md', {
+        [settings.theme.list.addQuantity]: posSwipe > 0,
+        [settings.theme.list.subQuantity]: posSwipe < 0,
+
       })}
     >
       <span className={classNames('', {
-        hidden: !(posSwipe > 0),
+        'opacity-0': !(posSwipe > 0),
+        hidden: (posSwipe < 0),
       })}
       >+
       </span>
