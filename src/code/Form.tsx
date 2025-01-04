@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
-import { debounce } from './utils';
 
 const defaultItem: Item = {
   id: `${'-'}${0}`,
   name: '',
   quantity: 1,
   state: 'edit',
-  timeStamp: Date.now(),
+  addTimestamp: Date.now(),
 };
 
 type Props = {
@@ -27,12 +26,14 @@ export function Form({
   const [downActive, setDownActive] = useState(false);
 
   const buttonState = useMemo(() => {
-    if (list.some((item) => item.state === 'edit')) {
-      return 'edit';
-    }
-
-    if (list.some((item) => item.state === 'delete')) {
-      return 'delete';
+    for (let index = 0; index < list.length; index++) {
+      const itm = list[index];
+      if (itm.state === 'edit') {
+        return 'edit';
+      }
+      if (itm.state === 'delete' && !itm.deletedTimestamp) {
+        return 'delete';
+      }
     }
 
     return 'add';
@@ -54,7 +55,14 @@ export function Form({
     if (!downActive) return () => { };
 
     id.current = setTimeout(() => {
-      setList((old) => old.filter((itm) => itm.state !== 'delete'));
+      setList((old) => {
+        return old.map((itm) => {
+          if (itm.state === 'delete') {
+            itm.deletedTimestamp = Date.now();
+          }
+          return itm;
+        });
+      });
       setDownActive(false);
     }, 500);
 

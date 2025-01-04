@@ -60,10 +60,10 @@ export function Settings({
 
     setList((old) => {
       if (newVal === 'oldest') {
-        return [...old].sort((a, b) => ((a.timeStamp || 0) < (b.timeStamp || 0) ? -1 : 1));
+        return [...old].sort((a, b) => ((a.addTimestamp || 0) < (b.addTimestamp || 0) ? -1 : 1));
       }
       if (newVal === 'newest') {
-        return [...old].sort((a, b) => ((a.timeStamp || 0) > (b.timeStamp || 0) ? -1 : 1));
+        return [...old].sort((a, b) => ((a.addTimestamp || 0) > (b.addTimestamp || 0) ? -1 : 1));
       }
 
       return old;

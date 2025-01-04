@@ -41,7 +41,9 @@ export function Todo() {
     >
       <div className='w-full sm:max-w-[60vw] p-4 '>
         <div className='w-full h-full flex justify-between '>
-          <Undo setList={setList} />
+          <Undo
+            setList={setList}
+          />
           <Settings
             setList={setList}
             settings={settings}

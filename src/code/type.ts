@@ -3,7 +3,8 @@ export type Item = {
   quantity: number;
   state: 'show' | 'delete' | 'edit';
   id: `${string}${number}`;
-  timeStamp?: number;
+  addTimestamp?: number;
+  deletedTimestamp?: number;
 }
 
 export type Setter<T> = (settter: T | ((oldV: T) => T)) => void

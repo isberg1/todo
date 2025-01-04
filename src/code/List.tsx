@@ -65,60 +65,62 @@ export function List({
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
-      {list.map((item) => {
-        return (
-          <li
-            className={classNames('break-all w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1', {
-              [settings.theme.list.show]: item.state === 'show',
-              [settings.theme.list.delete]: item.state === 'delete',
-              [settings.theme.list.edit]: item.state === 'edit',
-              'outline outline-red-500': false,
-            })}
-          >
-            <button
-              // longClick
-              onMouseDown={() => {
-                setEditObj({ ...item });
-              }}
-              // longClick
-              onTouchStart={() => {
-                setEditObj({ ...item });
-              }}
-              // normal Click
-              onClick={() => {
-                if (!editObj) {
-                  return;
-                }
-
-                setEditObj(undefined);
-                setList((old) => {
-                  const tmp = [...old];
-                  const obj = tmp.find((v) => v.id === item.id);
-                  if (!obj) return old;
-
-                  if (obj.state === 'show') {
-                    obj.state = 'delete';
-                  } else if (obj.state === 'delete') {
-                    obj.state = 'show';
-                  } else if (obj.state === 'edit') {
-                    obj.state = 'show';
-                  }
-                  return tmp;
-                });
-              }}
-              className='w-full my-1'
+      {list
+        .filter((item) => !item.deletedTimestamp)
+        .map((item) => {
+          return (
+            <li
+              className={classNames('break-all w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1', {
+                [settings.theme.list.show]: item.state === 'show',
+                [settings.theme.list.delete]: item.state === 'delete',
+                [settings.theme.list.edit]: item.state === 'edit',
+                'outline outline-red-500': false,
+              })}
             >
-              {item.name}
-            </button>
+              <button
+                // longClick
+                onMouseDown={() => {
+                  setEditObj({ ...item });
+                }}
+                // longClick
+                onTouchStart={() => {
+                  setEditObj({ ...item });
+                }}
+                // normal Click
+                onClick={() => {
+                  if (!editObj) {
+                    return;
+                  }
 
-            <Quantity
-              item={item}
-              setList={setList}
-              settings={settings}
-            />
-          </li>
-        );
-      })}
+                  setEditObj(undefined);
+                  setList((old) => {
+                    const tmp = [...old];
+                    const obj = tmp.find((v) => v.id === item.id);
+                    if (!obj) return old;
+
+                    if (obj.state === 'show') {
+                      obj.state = 'delete';
+                    } else if (obj.state === 'delete') {
+                      obj.state = 'show';
+                    } else if (obj.state === 'edit') {
+                      obj.state = 'show';
+                    }
+                    return tmp;
+                  });
+                }}
+                className='w-full my-1'
+              >
+                {item.name}
+              </button>
+
+              <Quantity
+                item={item}
+                setList={setList}
+                settings={settings}
+              />
+            </li>
+          );
+        })}
     </ul>
   );
 }
