@@ -2,10 +2,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Setter } from './type';
 
-type ValidTypes<T> = string | number| boolean|object |Array<T>
+type ValidTypes<T> = string | number | boolean | object | Array<T>
 
 export function usePersistState<T extends ValidTypes<T>>(val: T, key: string):
- [T, Setter<T>] {
+  [T, Setter<T>] {
   const [state, setStatePrivate] = useState<T>(val);
   const [ready, setReady] = useState(false);
 
@@ -27,7 +27,7 @@ export function usePersistState<T extends ValidTypes<T>>(val: T, key: string):
     if (typeof v === typeof val) {
       setStatePrivate(v);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // update persistent value on change
