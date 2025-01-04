@@ -36,6 +36,6 @@
   "lang": "no",
   "start_url": "/todo/index.html",
   "display": "standalone",
-  "background_color": "white",
-  "theme_color": "white"
+  "background_color": "#171d25",
+  "theme_color": "#171d25"
 }
