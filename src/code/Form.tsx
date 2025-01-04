@@ -130,7 +130,7 @@ export function Form({
                     quantity: 1,
                     state: 'show',
                     id: `${input.name}${Date.now()}`,
-                    timeStamp: Date.now(),
+                    addTimestamp: Date.now(),
                   } as const;
 
                   if (settings.sortOrder === 'newest') {
