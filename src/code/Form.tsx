@@ -16,7 +16,9 @@ type Props = {
 }
 
 export function Form({
-  list, setList, settings,
+  list,
+  setList,
+  settings,
 }: Props) {
   const [input, setInput] = useState(defaultItem);
   const [downActive, setDownActive] = useState(false);
@@ -123,9 +125,24 @@ export function Form({
             }
             case 'add': {
               if (input) {
-                setList((old) => [{
-                  name: input.name, quantity: 1, state: 'show', id: `${input}${Date.now()}`,
-                }, ...old]);
+                setList((old) => {
+                  const newObj = {
+                    name: input.name,
+                    quantity: 1,
+                    state: 'show',
+                    id: `${input}${Date.now()}`,
+                    timeStamp: Date.now(),
+                  } as const;
+
+                  if (settings.sortOrder === 'newest') {
+                    return [newObj, ...old];
+                  }
+
+                  if (settings.sortOrder === 'oldest') {
+                    return [...old, newObj];
+                  }
+                  return old;
+                });
 
                 resetInput = true;
               }

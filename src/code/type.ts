@@ -3,11 +3,13 @@ export type Item = {
   quantity: number;
   state: 'show' | 'delete' | 'edit';
   id: `${string}${number}`;
+  timeStamp?: number;
 }
 
 export type Setter<T> = (settter: T | ((oldV: T) => T)) => void
 
 export type Setting = {
+  sortOrder: 'newest' | 'oldest';
   theme: {
     bg: string;
     textColor: string;

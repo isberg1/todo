@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { Setter, Setting } from './type';
+import { Item, Setter, Setting } from './type';
 import { IconSettings } from '../icons/setting-5-svgrepo-com';
 
 type Props = {
   settings: Setting;
   setSettings: Setter<Setting>;
-
+  setList: Setter<Item[]>;
 }
 
 const textSizes = [
@@ -20,10 +20,15 @@ const textSizes = [
   'text-2xl',
   'text-3xl',
   'text-4xl',
-  'text-5xl',
 ];
 
-export function Settings({ settings, setSettings }: Props) {
+const SortOptions = ['newest', 'oldest'] as const;
+
+export function Settings({
+  settings,
+  setSettings,
+  setList,
+}: Props) {
   const [show, setShow] = useState(false);
   const [sliderValue, setSetSliderValue] = useState(() => textSizes.findIndex((ele, idx) => {
     if (ele === settings.textSize) {
@@ -49,6 +54,21 @@ export function Settings({ settings, setSettings }: Props) {
     document.body.classList.add(settings.theme.textColor);
     document.body.classList.add(settings.theme.bg);
   }, [settings.theme.bg, settings.theme.textColor]);
+
+  const updateSortOrder = useCallback((newVal: typeof SortOptions[number]) => {
+    setSettings((old) => ({ ...old, sortOrder: newVal }));
+
+    setList((old) => {
+      if (newVal === 'oldest') {
+        return [...old].sort((a, b) => ((a.timeStamp || 0) < (b.timeStamp || 0) ? -1 : 1));
+      }
+      if (newVal === 'newest') {
+        return [...old].sort((a, b) => ((a.timeStamp || 0) > (b.timeStamp || 0) ? -1 : 1));
+      }
+
+      return old;
+    });
+  }, [setList, setSettings]);
 
   return (
     <>
@@ -100,7 +120,7 @@ export function Settings({ settings, setSettings }: Props) {
           </div>
           <h1 className='-mt-1 underline'>Settings</h1>
 
-          <div className=' min-h-9 w-full flex flex-col justify-center items-center gap-2 mb-3'>
+          <div className=' min-h-9 w-full flex flex-col justify-center items-center gap-3 mb-3'>
             <div className='w-full flex flex-col justify-center items-center'>
               <span>Text Size: {sliderValue}</span>
               <input
@@ -115,6 +135,24 @@ export function Settings({ settings, setSettings }: Props) {
                 }}
               />
             </div>
+
+            <fieldset className='flex flex-col justify-center items-center gap-1'>
+              <legend>Sort Order</legend>
+              <div className='flex justify-center items-center gap-2'>
+                {SortOptions.map((val) => (
+                  <label htmlFor={val}>
+                    {val}
+                    <input
+                      id={val}
+                      type='radio'
+                      value={val}
+                      checked={settings.sortOrder === val}
+                      onChange={() => { updateSortOrder(val); }}
+                    />
+                  </label>
+                ))}
+              </div>
+            </fieldset>
 
             <div className='w-full flex flex-col justify-center items-center gap-2'>
               <button
