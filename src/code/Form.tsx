@@ -1,12 +1,14 @@
-import React, { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
+import { debounce } from './utils';
 
 const defaultItem: Item = {
   id: `${'-'}${0}`,
   name: '',
   quantity: 1,
   state: 'edit',
+  timeStamp: Date.now(),
 };
 
 type Props = {
@@ -21,10 +23,8 @@ export function Form({
   settings,
 }: Props) {
   const [input, setInput] = useState(defaultItem);
-  const [downActive, setDownActive] = useState(false);
   const id = useRef<ReturnType<typeof setTimeout>>();
-
-  const [deleteObj, setDeleteObj] = useState<Item[]>();
+  const [downActive, setDownActive] = useState(false);
 
   const buttonState = useMemo(() => {
     if (list.some((item) => item.state === 'edit')) {
@@ -48,18 +48,19 @@ export function Form({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buttonState]);
 
-  // longClick logic, do this via useEffect to handle both onMouseDown and onTouchStart being invoked for touch events
+  // longClick logic, do this via useEffect to handle both
+  // onMouseDown and onTouchStart being invoked for touch events
   useEffect(() => {
-    if (!deleteObj) return () => { };
+    if (!downActive) return () => { };
 
     id.current = setTimeout(() => {
       setList((old) => old.filter((itm) => itm.state !== 'delete'));
-      setDeleteObj(undefined);
+      setDownActive(false);
     }, 500);
 
     return () => clearTimeout(id.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deleteObj]);
+  }, [downActive]);
 
   return (
     <div className='flex flex-col justify-between gap-2 mb-4 mt-1'>
@@ -81,30 +82,20 @@ export function Form({
         </button>
       </div>
       <button
-        onMouseUp={() => {
-          setDownActive(false);
-        }}
-        onTouchEnd={() => {
-          setDownActive(false);
-        }}
         // longClick
         onMouseDown={() => {
-          setDeleteObj(list.filter((v) => v.state === 'delete'));
           setDownActive(true);
         }}
         // longClick
         onTouchStart={() => {
-          setDeleteObj(list.filter((v) => v.state === 'delete'));
           setDownActive(true);
         }}
         // normal Click
         onClick={() => {
-          if (!deleteObj) {
+          if (!downActive) { // longClick has handled click
             return;
           }
-
-          setDeleteObj(undefined);
-
+          setDownActive(false);
           let resetInput = false;
 
           switch (buttonState) {
@@ -124,20 +115,19 @@ export function Form({
               break;
             }
             case 'add': {
-              if (input) {
+              if (input.name) {
                 setList((old) => {
                   const newObj = {
                     name: input.name,
                     quantity: 1,
                     state: 'show',
-                    id: `${input}${Date.now()}`,
+                    id: `${input.name}${Date.now()}`,
                     timeStamp: Date.now(),
                   } as const;
 
                   if (settings.sortOrder === 'newest') {
                     return [newObj, ...old];
                   }
-
                   if (settings.sortOrder === 'oldest') {
                     return [...old, newObj];
                   }

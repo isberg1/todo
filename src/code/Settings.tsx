@@ -38,7 +38,7 @@ export function Settings({
   }));
   const dialogEle = useRef<HTMLDialogElement>(null);
 
-  // update slider when settings changes
+  // update textSize slider when settings changes
   useEffect(() => {
     const idx = textSizes.findIndex((ele) => {
       if (ele === settings.textSize) {
@@ -136,13 +136,14 @@ export function Settings({
               />
             </div>
 
-            <fieldset className='flex flex-col justify-center items-center gap-1'>
-              <legend>Sort Order</legend>
+            <fieldset className='flex flex-col justify-center items-center gap-1 min-h-10 md:min-h-7'>
+              <legend>Sort Order:</legend>
               <div className='flex justify-center items-center gap-2'>
                 {SortOptions.map((val) => (
                   <label htmlFor={val}>
                     {val}
                     <input
+                      className='m-1'
                       id={val}
                       type='radio'
                       value={val}
@@ -154,7 +155,7 @@ export function Settings({
               </div>
             </fieldset>
 
-            <div className='w-full flex flex-col justify-center items-center gap-2'>
+            <div className='w-full mt-6 flex flex-col justify-center items-center gap-2'>
               <button
                 className='border-solid border-white border-2 px-2 rounded-lg'
                 onClick={() => {

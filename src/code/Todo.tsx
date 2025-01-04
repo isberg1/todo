@@ -5,6 +5,7 @@ import { Item, Setting } from './type';
 import { List } from './List';
 import { Form } from './Form';
 import { Settings } from './Settings';
+import { Undo } from './Undo';
 
 const defaultTheme: Setting['theme'] = {
   bg: 'bg-[#171d25]',
@@ -39,7 +40,8 @@ export function Todo() {
     })}
     >
       <div className='w-full sm:max-w-[60vw] p-4 '>
-        <div className='w-full h-full flex justify-end '>
+        <div className='w-full h-full flex justify-between '>
+          <Undo setList={setList} />
           <Settings
             setList={setList}
             settings={settings}
