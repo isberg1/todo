@@ -113,7 +113,7 @@ export function Form({
   }, [add, buttonState, downActive, edit]);
 
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+    if (e.key === 'Enter') {
       switch (buttonState) {
         case 'edit': {
           edit();
