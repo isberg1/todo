@@ -57,7 +57,7 @@ export function Form({
     id.current = setTimeout(() => {
       setList((old) => {
         return old.map((itm) => {
-          if (itm.state === 'delete') {
+          if (itm.state === 'delete' && !itm.deletedTimestamp) {
             itm.deletedTimestamp = Date.now();
           }
           return itm;

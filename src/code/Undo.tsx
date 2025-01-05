@@ -12,7 +12,9 @@ export function Undo({
     setList((old) => {
       old.forEach((v, i) => {
         if (v.state === 'delete' && v.deletedTimestamp) {
-          if (v.deletedTimestamp > (old[mostRecentIdx]?.deletedTimestamp || 0)) {
+          const a = v.deletedTimestamp;
+          const b = old[mostRecentIdx]?.deletedTimestamp || 0;
+          if (a > b) {
             mostRecentIdx = i;
           }
         }

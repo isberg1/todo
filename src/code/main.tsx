@@ -25,7 +25,6 @@ if (body) {
   body.appendChild(div);
   const reactDiv = document.getElementById(div.id);
   if (reactDiv) {
-    console.log('reactDiv', reactDiv);
     ReactDOM.render(<Todo />, reactDiv);
   }
 }
