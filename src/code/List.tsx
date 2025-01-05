@@ -54,14 +54,7 @@ export function List({
 
   const cancelClick = useCallback(debounce(() => {
     setEditObj(undefined);
-  }, 100), []);
-
-  useEffect(() => {
-    if (!editObj) return () => { };
-
-    document.addEventListener('scroll', cancelClick);
-    return () => { document.removeEventListener('scroll', cancelClick); };
-  }, [cancelClick, editObj]);
+  }, 40), []);
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
@@ -86,6 +79,7 @@ export function List({
                 onTouchStart={() => {
                   setEditObj({ ...item });
                 }}
+                onTouchMove={cancelClick}
                 // normal Click
                 onClick={() => {
                   if (!editObj) {
