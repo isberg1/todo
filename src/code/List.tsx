@@ -52,9 +52,9 @@ export function List({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editObj]);
 
-  const cancelClick = useCallback(debounce(() => {
+  const cancelClick = useCallback(() => {
     setEditObj(undefined);
-  }, 40), []);
+  }, []);
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
