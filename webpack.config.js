@@ -24,7 +24,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Main',
+      title: 'Todo',
       filename: 'index.html',
       chunks: ['main'],
       scriptLoading: 'module',
