@@ -1,11 +1,14 @@
 import React, { useCallback } from 'react';
-import { Item, Setter } from './type';
+import { Item, Setter, Setting } from './type';
+import { UndoIcon } from '../icons/UndoIcon';
 
 type Props = {
   setList: Setter<Item[]>;
+  settings: Setting;
 }
 export function Undo({
   setList,
+  settings,
 }: Props) {
   const onClick = useCallback(() => {
     let mostRecentIdx = -1;
@@ -29,12 +32,11 @@ export function Undo({
   }, [setList]);
 
   return (
-    <div>
-      <button
-        onClick={onClick}
-      >
-        undo
-      </button>
-    </div>
+    <button
+      className='flex justify-center items-center'
+      onClick={onClick}
+    >
+      <UndoIcon settings={settings} />
+    </button>
   );
 }

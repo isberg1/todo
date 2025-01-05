@@ -43,6 +43,7 @@ export function Todo() {
         <div className='w-full h-full flex justify-between '>
           <Undo
             setList={setList}
+            settings={settings}
           />
           <Settings
             setList={setList}
