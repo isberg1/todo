@@ -115,11 +115,14 @@ export function Quantity({
         }, { once: true }
         );
       }}
-      className={classNames('w-fit min-w-16 md:min-w-7 px-2  flex justify-end items-center select-none break-normal rounded-e-md', {
-        [settings.theme.list.addQuantity]: posSwipe > 0,
-        [settings.theme.list.subQuantity]: posSwipe < 0,
+      className={classNames(
+        'w-fit min-w-16 md:min-w-7 px-2',
+        'flex justify-center items-center select-none break-normal rounded-e-md',
+        {
+          [settings.theme.list.addQuantity]: posSwipe > 0,
+          [settings.theme.list.subQuantity]: posSwipe < 0,
 
-      })}
+        })}
     >
       <span className={classNames('', {
         'opacity-0': !(posSwipe > 0),

@@ -102,7 +102,7 @@ export function List({
                     return tmp;
                   });
                 }}
-                className='w-full my-1'
+                className='w-full overflow-hidden my-1'
               >
                 {item.name}
               </button>
