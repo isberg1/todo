@@ -63,7 +63,7 @@ export function List({
         .map((item) => {
           return (
             <li
-              className={classNames('break-all w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1', {
+              className={classNames('break-words w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1', {
                 [settings.theme.list.show]: item.state === 'show',
                 [settings.theme.list.delete]: item.state === 'delete',
                 [settings.theme.list.edit]: item.state === 'edit',

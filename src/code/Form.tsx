@@ -113,7 +113,7 @@ export function Form({
   }, [add, buttonState, downActive, edit]);
 
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       switch (buttonState) {
         case 'edit': {
           edit();
@@ -158,7 +158,7 @@ export function Form({
         <input
           onKeyDown={onKeyDown}
           onChange={onChange}
-          className='w-full shadow-2xl rounded p-2 text-black min-h-9 md:min-h-7 break-all'
+          className='w-full shadow-2xl rounded py-2 pl-2 pr-10 text-black min-h-9 md:min-h-7'
           type='text'
           value={input.name}
         />
