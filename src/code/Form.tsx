@@ -187,7 +187,8 @@ export function Form({
           [settings.theme.form.show]: buttonState === 'add',
           [settings.theme.form.edit]: buttonState === 'edit',
           [settings.theme.form.delete]: buttonState === 'delete',
-          'animate-[pulse_1s]  ease-[cubic-bezier(0.7, 0, 0.84, 0)]': downActive,
+          'animate-[pulse_1s]  ease-[cubic-bezier(0.7, 0, 0.84, 0)]': downActive && buttonState === 'delete',
+          'scale-[99%]': downActive,
         })}
       >
         {buttonState}

@@ -63,12 +63,15 @@ export function List({
         .map((item) => {
           return (
             <li
-              className={classNames('break-words w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1', {
-                [settings.theme.list.show]: item.state === 'show',
-                [settings.theme.list.delete]: item.state === 'delete',
-                [settings.theme.list.edit]: item.state === 'edit',
-                'outline outline-red-500': false,
-              })}
+              className={classNames(
+                'break-words w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1',
+                {
+                  [settings.theme.list.show]: item.state === 'show',
+                  [settings.theme.list.delete]: item.state === 'delete',
+                  [settings.theme.list.edit]: item.state === 'edit',
+                  'outline outline-red-500': false,
+                  'scale-[99%]': editObj?.id === item.id,
+                })}
             >
               <button
                 // longClick
