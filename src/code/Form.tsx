@@ -131,6 +131,12 @@ export function Form({
     setInput((old) => ({ ...old, name: e.target.value }));
   }, []);
 
+  const [clearActive, setClearActive] = useState(false);
+
+  const activateClear = useCallback(() => {
+    setClearActive(true);
+  }, []);
+
   //  find item for editing
   useEffect(() => {
     if (buttonState === 'edit') {
@@ -164,8 +170,13 @@ export function Form({
         />
         <button
           type='button'
-          className='text-black absolute z-10 right-0 pr-2 h-full w-10'
+          className={classNames('text-black absolute z-10 right-0 pr-2 h-full w-10', {
+            'scale-[99%]': clearActive,
+          })}
+          onTouchStart={activateClear}
+          onMouseDown={activateClear}
           onClick={() => {
+            setClearActive(false);
             setInput(defaultItem);
           }}
         >

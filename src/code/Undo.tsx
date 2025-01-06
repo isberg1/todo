@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
+import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
 import { UndoIcon } from '../icons/UndoIcon';
 
@@ -10,7 +11,10 @@ export function Undo({
   setList,
   settings,
 }: Props) {
+  const [downActive, setDownActive] = useState(false);
+
   const onClick = useCallback(() => {
+    setDownActive(false);
     let mostRecentIdx = -1;
     setList((old) => {
       old.forEach((v, i) => {
@@ -31,9 +35,17 @@ export function Undo({
     });
   }, [setList]);
 
+  const onDown = useCallback(() => {
+    setDownActive(true);
+  }, []);
+
   return (
     <button
-      className='flex justify-center items-center'
+      onMouseDown={onDown}
+      onTouchStart={onDown}
+      className={classNames('flex justify-center items-center', {
+        'scale-[99%]': downActive,
+      })}
       onClick={onClick}
     >
       <UndoIcon settings={settings} />
