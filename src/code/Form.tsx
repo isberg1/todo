@@ -31,13 +31,13 @@ export function Form({
       if (itm.state === 'edit') {
         return 'edit';
       }
-      if (itm.state === 'delete' && !itm.deletedTimestamp) {
+      if (itm.state === 'delete' && !itm.deletedTimestamp && !input.name) {
         return 'delete';
       }
     }
 
     return 'add';
-  }, [list]);
+  }, [input.name, list]);
 
   const add = useCallback(() => {
     if (input.name) {
