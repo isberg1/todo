@@ -15,10 +15,13 @@ export function Button({
   ...props
 }: Props) {
   const [downActive, setDownActive] = useState(false);
+  const timeoutId = useRef<ReturnType<typeof setTimeout>>();
 
   const setDownInactive = useCallback(() => {
-    setDownActive(false);
-  }, []);
+    if (downActive) {
+      setDownActive(false);
+    }
+  }, [downActive]);
 
   const onTouchStart = useCallback((e) => {
     setDownActive(true);
@@ -49,17 +52,16 @@ export function Button({
     setDownInactive();
     props.onTouchMove?.(e);
   }, [props, setDownInactive]);
-  const id = useRef<ReturnType<typeof setTimeout>>();
+
   // longClick logic, do this via useEffect to handle both
   // onMouseDown and onTouchStart being invoked for touch events
   useEffect(() => {
     if (!onLongClick) return () => { };
     if (!downActive) return () => { };
 
-    id.current = setTimeout(onLongClick, 500);
-    return () => clearTimeout(id.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [downActive]);
+    timeoutId.current = setTimeout(onLongClick, 500);
+    return () => clearTimeout(timeoutId.current);
+  }, [downActive, onLongClick]);
 
   return (
     <button

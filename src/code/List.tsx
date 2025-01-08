@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
 import { Quantity } from './Quantity';
-import { debounce } from './utils';
+import { Button } from './Button';
 
 type Props = {
   list: Item[];
@@ -16,7 +16,6 @@ export function List({
   settings,
 }: Props) {
   const [editObj, setEditObj] = useState<Item | undefined>();
-  const id = useRef<ReturnType<typeof setTimeout>>();
 
   const canEdit = useMemo(() => {
     const nrOfEditItems = list.reduce((prev, cur) => {
@@ -29,32 +28,26 @@ export function List({
     return nrOfEditItems < 1;
   }, [list]);
 
-  // longClick logic, do this via useEffect to handle both onMouseDown and onTouchStart being invoked for touch events
-  useEffect(() => {
-    if (!editObj) return () => { };
+  const onLongClick = useCallback(() => {
+    setList((old) => {
+      const tmp = [...old];
+      const obj = tmp.find((v) => v.id === editObj?.id);
+      if (!obj) return old;
 
-    id.current = setTimeout(() => {
-      setList((old) => {
-        const tmp = [...old];
-        const obj = tmp.find((v) => v.id === editObj?.id);
-        if (!obj) return old;
+      if (obj.state === 'show') {
+        obj.state = (canEdit) ? 'edit' : 'delete';
+      }
 
-        if (obj.state === 'show') {
-          obj.state = (canEdit) ? 'edit' : 'delete';
-        }
-
-        return tmp;
-      });
-      setEditObj(undefined);
-    }, 500);
-
-    return () => clearTimeout(id.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editObj]);
+      return tmp;
+    });
+    setEditObj(undefined);
+  }, [canEdit, editObj?.id, setList]);
 
   const cancelClick = useCallback(() => {
-    setEditObj(undefined);
-  }, []);
+    if (editObj) {
+      setEditObj(undefined);
+    }
+  }, [editObj]);
 
   return (
     <ul className='w-full flex flex-col gap-2 my-2'>
@@ -73,17 +66,16 @@ export function List({
                   'scale-[99%]': editObj?.id === item.id,
                 })}
             >
-              <button
-                // longClick
+              <Button
                 onMouseDown={() => {
                   setEditObj({ ...item });
                 }}
-                // longClick
                 onTouchStart={() => {
                   setEditObj({ ...item });
                 }}
                 onTouchMove={cancelClick}
-                // normal Click
+                onMouseOut={cancelClick}
+                onLongClick={onLongClick}
                 onClick={() => {
                   if (!editObj) {
                     return;
@@ -108,7 +100,7 @@ export function List({
                 className='w-full overflow-hidden my-1'
               >
                 {item.name}
-              </button>
+              </Button>
 
               <Quantity
                 item={item}

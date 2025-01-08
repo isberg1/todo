@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Item, Setter, Setting } from './type';
+import { Button } from './Button';
 
 const defaultItem: Item = {
   id: `${'-'}${0}`,
@@ -23,7 +24,6 @@ export function Form({
 }: Props) {
   const [input, setInput] = useState(defaultItem);
   const id = useRef<ReturnType<typeof setTimeout>>();
-  const [downActive, setDownActive] = useState(false);
 
   const buttonState = useMemo(() => {
     for (let index = 0; index < list.length; index++) {
@@ -91,15 +91,9 @@ export function Form({
         return itm;
       });
     });
-    setDownActive(false);
   }, [setList]);
 
   const onClick = useCallback(() => {
-    if (!downActive) { // longClick has handled click
-      return;
-    }
-    setDownActive(false);
-
     switch (buttonState) {
       case 'edit': {
         edit();
@@ -110,7 +104,7 @@ export function Form({
         break;
       }
     }
-  }, [add, buttonState, downActive, edit]);
+  }, [add, buttonState, edit]);
 
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -131,12 +125,6 @@ export function Form({
     setInput((old) => ({ ...old, name: e.target.value }));
   }, []);
 
-  const [clearActive, setClearActive] = useState(false);
-
-  const activateClear = useCallback(() => {
-    setClearActive(true);
-  }, []);
-
   //  find item for editing
   useEffect(() => {
     if (buttonState === 'edit') {
@@ -148,16 +136,6 @@ export function Form({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buttonState]);
 
-  // longClick logic, do this via useEffect to handle both
-  // onMouseDown and onTouchStart being invoked for touch events
-  useEffect(() => {
-    if (!downActive) return () => { };
-
-    id.current = setTimeout(del, 500);
-    return () => clearTimeout(id.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [downActive]);
-
   return (
     <div className='flex flex-col justify-between gap-2 mb-4 mt-1'>
       <div className='w-full relative  '>
@@ -168,42 +146,28 @@ export function Form({
           type='text'
           value={input.name}
         />
-        <button
+        <Button
           type='button'
           className={classNames('text-black absolute z-10 right-0 pr-2 h-full w-10', {
-            'scale-[99%]': clearActive,
           })}
-          onTouchStart={activateClear}
-          onMouseDown={activateClear}
           onClick={() => {
-            setClearActive(false);
             setInput(defaultItem);
           }}
         >
           X
-        </button>
+        </Button>
       </div>
-      <button
-        // longClick
-        onMouseDown={() => {
-          setDownActive(true);
-        }}
-        // longClick
-        onTouchStart={() => {
-          setDownActive(true);
-        }}
-        // normal Click
+      <Button
         onClick={onClick}
+        onLongClick={del}
         className={classNames('border-2 border-white rounded-lg min-h-10 md:min-h-7 capitalize', {
           [settings.theme.form.show]: buttonState === 'add',
           [settings.theme.form.edit]: buttonState === 'edit',
           [settings.theme.form.delete]: buttonState === 'delete',
-          'animate-[pulse_1s]  ease-[cubic-bezier(0.7, 0, 0.84, 0)]': downActive && buttonState === 'delete',
-          'scale-[99%]': downActive,
         })}
       >
         {buttonState}
-      </button>
+      </Button>
     </div>
   );
 }
