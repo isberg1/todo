@@ -57,7 +57,7 @@ export function List({
           return (
             <li
               className={classNames(
-                'break-words w-full min-h-9 md:min-h-7 flex justify-between rounded-lg pl-1',
+                'break-words w-full min-h-11 md:min-h-7 flex justify-between rounded-lg pl-1',
                 {
                   [settings.theme.list.show]: item.state === 'show',
                   [settings.theme.list.delete]: item.state === 'delete',

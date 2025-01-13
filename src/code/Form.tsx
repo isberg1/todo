@@ -160,7 +160,7 @@ export function Form({
       <Button
         onClick={onClick}
         onLongClick={del}
-        className={classNames('border-2 border-white rounded-lg min-h-10 md:min-h-7 capitalize', {
+        className={classNames('border-2 border-white rounded-lg min-h-11 md:min-h-7 capitalize', {
           [settings.theme.form.show]: buttonState === 'add',
           [settings.theme.form.edit]: buttonState === 'edit',
           [settings.theme.form.delete]: buttonState === 'delete',

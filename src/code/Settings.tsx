@@ -122,8 +122,8 @@ export function Settings({
           </div>
           <h1 className='-mt-1 underline'>Settings</h1>
 
-          <div className=' min-h-9 w-full flex flex-col justify-center items-center gap-3 mb-3'>
-            <div className='w-full flex flex-col justify-center items-center'>
+          <div className=' min-h-9 w-full flex flex-col justify-center items-center gap-4 mb-3'>
+            <div className='w-full flex flex-col justify-center items-center gap-2 mt-2'>
               <span>Text Size: {sliderValue}</span>
               <input
                 className='w-[90%]  md:w-9/12'
@@ -138,7 +138,7 @@ export function Settings({
               />
             </div>
 
-            <fieldset className='flex flex-col justify-center items-center  min-h-10 md:min-h-7'>
+            <fieldset className='flex flex-col justify-center items-center  min-h-11 md:min-h-7'>
               <span>
                 <legend className=''>Sort Order:</legend>
               </span>
